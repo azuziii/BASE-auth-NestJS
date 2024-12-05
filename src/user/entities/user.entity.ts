@@ -1,8 +1,9 @@
 import { Base } from 'src/shared/base/base.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { AccountStatus } from '../enum/account_status.enum';
 import { ProfileVisibility } from '../enum/profile_visibility.enum';
 import { UserRole } from '../enum/user_role.enum';
+import { Session } from 'src/session/entities/session.entity';
 
 @Entity('user')
 export class User extends Base {
@@ -45,8 +46,8 @@ export class User extends Base {
   //   @OneToMany(() => Friend, (friend) => friend.requester)
   //   friends: Friend[];
 
-  //   @OneToMany(() => Session, (session) => session.user)
-  //   sessions: Session[];
+  @OneToMany(() => Session, (session) => session.user)
+  sessions: Session[];
 
   isVerified(): boolean {
     return this.account_status !== AccountStatus.UNVERIFIED;
