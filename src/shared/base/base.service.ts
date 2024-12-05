@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   DeepPartial,
   FindOptionsOrder,
@@ -32,16 +32,8 @@ export class BaseService<
     return this.repository.find({ where: whereOptions, order: orderOptions });
   }
 
-  async findOne(
-    whereOptions?: FindOptionsWhere<T>,
-    { withException = false } = {},
-  ): Promise<T> {
-    const found = await this.repository.findOne({ where: whereOptions });
-    if (!found && withException) {
-      throw new NotFoundException();
-    }
-
-    return found;
+  findOne(whereOptions?: FindOptionsWhere<T>): Promise<T> {
+    return this.repository.findOne({ where: whereOptions });
   }
 
   async update(id: string, updateDto: UpdateDto) {
