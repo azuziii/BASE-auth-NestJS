@@ -1,7 +1,8 @@
 import { Base } from 'src/shared/base/base.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
+@Entity('session')
 export class Session extends Base {
   @Column({ nullable: false, type: 'text', unique: true })
   session_token!: string;
