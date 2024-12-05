@@ -33,7 +33,7 @@ import { Request } from 'express';
         setup: (cls, req: Request) => {
           cls.set(USER_SYMBOL, req.ip);
           cls.set(USER_AGENT_SYMBOL, req.headers['user-agent']);
-          cls.set(USER_IP_SYMBOL, req.user);
+          cls.set(USER_IP_SYMBOL, req['user']);
         },
       },
     }),
