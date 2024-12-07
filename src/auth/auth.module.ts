@@ -7,6 +7,7 @@ import { SessionModule } from 'src/session/session.module';
 import { SessionStrategy } from './strategy/session.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { IAuth } from './auth.interface';
+import { RoleStrategy } from './strategy/role.strategy';
 
 @Module({
   imports: [UserModule, SessionModule, PassportModule],
@@ -15,6 +16,7 @@ import { IAuth } from './auth.interface';
     AuthService,
     LocalStrategy,
     SessionStrategy,
+    RoleStrategy,
     {
       provide: IAuth,
       useExisting: AuthService,
