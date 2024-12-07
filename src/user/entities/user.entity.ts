@@ -43,9 +43,14 @@ export class User extends Base {
   @Column({ type: 'timestamptz', default: null })
   last_online: Date;
 
+  @Column({ type: 'text', default: '' })
+  bio!: string;
+
+  @Column({ type: 'text', default: '' })
+  profile_picture!: string;
+
   //   @OneToMany(() => Friend, (friend) => friend.requester)
   //   friends: Friend[];
-
   @OneToMany(() => Session, (session) => session.user)
   sessions: Session[];
 
