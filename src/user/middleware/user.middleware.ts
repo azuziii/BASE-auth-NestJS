@@ -13,7 +13,7 @@ export class UserMiddleware implements NestMiddleware {
     private readonly cls: ClsService,
   ) {}
   async use(req: Request, res: any, next: () => void) {
-    const sessionToken = req.signedCookies[SESSION_TOKEN];
+    const sessionToken = req.cookies[SESSION_TOKEN];
     let user: User | null = null;
 
     if (sessionToken) {
