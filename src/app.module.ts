@@ -1,16 +1,19 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { SessionModule } from './session/session.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ClsModule } from 'nestjs-cls';
+import { ClsMiddleware, ClsModule } from 'nestjs-cls';
 import {
   USER_AGENT_SYMBOL,
   USER_IP_SYMBOL,
   USER_SYMBOL,
 } from './user/constants';
 import { Request } from 'express';
+import { AuthModule } from './auth/auth.module';
+import { UserMiddleware } from './user/middleware/user.middleware';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -26,6 +29,7 @@ import { Request } from 'express';
       logging: true,
       ssl: true,
     }),
+    ConfigModule.forRoot({ isGlobal: true }),
     ClsModule.forRoot({
       global: true,
       middleware: {
@@ -39,8 +43,14 @@ import { Request } from 'express';
     }),
     UserModule,
     SessionModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ClsMiddleware).forRoutes('*');
+    consumer.apply(UserMiddleware).forRoutes('*');
+  }
+}
