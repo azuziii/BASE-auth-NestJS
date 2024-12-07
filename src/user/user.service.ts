@@ -23,4 +23,8 @@ export class UserService
       where: { username },
     });
   }
+
+  findByEmail(email: string): Promise<User> {
+    return this.findOne({ email });
+  }
 }
