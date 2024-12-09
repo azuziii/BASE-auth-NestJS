@@ -20,6 +20,8 @@ export class UserMiddleware implements NestMiddleware {
       user = await this.iUser.findOne({
         sessions: { session_token: sessionToken },
       });
+
+      this.cls.set(SESSION_TOKEN, sessionToken);
     }
 
     this.cls.set(USER_SYMBOL, user);
