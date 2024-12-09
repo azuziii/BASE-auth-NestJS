@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Body, Inject, Injectable } from '@nestjs/common';
 import { User } from 'src/user/entities/user.entity';
 import { IUser } from 'src/user/user.interface';
 import * as bcrypt from 'bcrypt';
@@ -6,6 +6,7 @@ import { ISession } from 'src/session/session.interface';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { IAuth } from './auth.interface';
+import { ResponseDto } from 'src/core/types/response.dto';
 
 @Injectable()
 export class AuthService implements IAuth {
@@ -23,7 +24,11 @@ export class AuthService implements IAuth {
     return sessionTokn.session_token;
   }
 
-  async register({ email, username, password }: RegisterDto): Promise<string> {
+  async register({
+    email,
+    username,
+    password,
+  }: RegisterDto): Promise<ResponseDto> {
     const isUsernameTaken = await this.userService.findByUsername(username);
     if (isUsernameTaken) {
       throw new BadRequestException('Username taken');
@@ -41,6 +46,8 @@ export class AuthService implements IAuth {
       username,
       password: hashedPassword,
     });
+
+    return { message: 'Please check your email to confirm your registration.' };
 
     return this.login({ username, password });
   }
