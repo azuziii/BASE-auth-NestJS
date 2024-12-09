@@ -16,7 +16,10 @@ export class Session extends Base {
   @Column({ nullable: false, type: 'text' })
   user_agent!: string;
 
-  @ManyToOne(() => User, (user) => user.sessions, { eager: true })
+  @ManyToOne(() => User, (user) => user.sessions, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   user!: User;
 
   isActive() {
