@@ -17,7 +17,7 @@ export class AuthController {
     httpOnly: true,
     secure: false,
     sameSite: 'lax',
-    maxAge: 30 * 24 * 3600 * 1000,
+    expires: new Date(Date.now() + 3600 * 24 * 30 * 1000),
   })
   @Post('login')
   login(@Body() loginDto: LoginDto) {
@@ -29,7 +29,7 @@ export class AuthController {
     httpOnly: true,
     secure: false,
     sameSite: 'lax',
-    maxAge: 30 * 24 * 3600 * 1000,
+    expires: new Date(Date.now() + 3600 * 24 * 30 * 1000),
   })
   @Post('register')
   register(@Body() registerDto: RegisterDto) {
