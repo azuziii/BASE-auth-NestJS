@@ -18,10 +18,13 @@ export class User extends Base {
 
   @Column({
     enum: AccountStatus,
-    default: AccountStatus.UNVERIFIED,
+    default: AccountStatus.ACTIVE,
     nullable: false,
   })
   account_status!: AccountStatus;
+
+  @Column({ type: 'boolean', default: false })
+  is_verified: boolean;
 
   //   @Column({ nullable: false, type: 'text' })
   //   recovery_passket!: string;
@@ -54,8 +57,8 @@ export class User extends Base {
   @OneToMany(() => Session, (session) => session.user)
   sessions: Session[];
 
-  isVerified(): boolean {
-    return this.account_status !== AccountStatus.UNVERIFIED;
+  setAccountVerified() {
+    this.is_verified = true;
   }
 
   setAccountStatus(newStatus: AccountStatus) {
