@@ -14,6 +14,7 @@ import { Request } from 'express';
 import { AuthModule } from './auth/auth.module';
 import { UserMiddleware } from './user/middleware/user.middleware';
 import { ConfigModule } from '@nestjs/config';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
@@ -28,6 +29,20 @@ import { ConfigModule } from '@nestjs/config';
       synchronize: true,
       logging: true,
       ssl: true,
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+          user: 'mouel477@gmail.com',
+          pass: 'aqfn cpuz dhvi yvcg',
+        },
+      },
+      defaults: {
+        from: '"No Reply" <noreply@azuzi.com>',
+      },
     }),
     ConfigModule.forRoot({ isGlobal: true }),
     ClsModule.forRoot({
