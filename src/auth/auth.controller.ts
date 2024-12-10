@@ -3,9 +3,12 @@ import { AuthService } from './auth.service';
 import { Public } from 'src/shared/decorators/public.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { LoginDto } from './dto/login.dto';
-import { SetSessionToken } from 'src/session/decorators/set-session.decorator';
+import { ClearSessionToken } from 'src/session/decorators/clear-session.decorator';
 import { SESSION_TOKEN } from 'src/session/constants';
 import { RegisterDto } from './dto/register.dto';
+import { VerifyRegister } from './dto/register-verify.dto';
+import { SetSessionToken } from 'src/session/decorators/set-session.decorator';
+import { VerifyGuard } from './guards/verify.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -34,5 +37,22 @@ export class AuthController {
   @Post('register')
   register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
+  }
+
+  @ClearSessionToken(SESSION_TOKEN, {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'lax',
+    expires: new Date(),
+  })
+  @Post('logout')
+  logout() {
+    return this.authService.logout();
+  }
+
+  @UseGuards(VerifyGuard)
+  @Post('register-verify')
+  verifyOtp(@Body() verifyRegister: VerifyRegister) {
+    return this.authService.verifyOTP(verifyRegister.otp);
   }
 }
