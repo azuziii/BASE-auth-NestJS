@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {
   DeepPartial,
+  FindManyOptions,
+  FindOneOptions,
   FindOptionsOrder,
   FindOptionsWhere,
   Repository,
@@ -25,24 +27,31 @@ export class BaseService<
     return this.repository.save(entity);
   }
 
-  findAll(
-    whereOptions?: FindOptionsWhere<T>,
-    orderOptions?: FindOptionsOrder<T>,
-  ): Promise<T[]> {
-    return this.repository.find({ where: whereOptions, order: orderOptions });
+  findAll(options?: FindManyOptions<T>): Promise<T[]> {
+    return this.repository.find({
+      order: {
+        created_at: 'DESC',
+      } as FindOptionsOrder<T>,
+      ...options,
+    });
   }
 
-  findOne(whereOptions?: FindOptionsWhere<T>): Promise<T> {
-    return this.repository.findOne({ where: whereOptions });
+  findOne(options: FindOneOptions<T>): Promise<T> {
+    return this.repository.findOne(options);
   }
 
   async update(id: string, updateDto: UpdateDto) {
-    await this.findOne({ id } as FindOptionsWhere<T>);
+    await this.findOne({ where: { id } as FindOptionsWhere<T> });
     return this.repository.update(id, updateDto);
   }
 
   async remove(id: string) {
-    const found = await this.findOne({ id } as FindOptionsWhere<T>);
+    const entity = await this.findOne({ where: { id } as FindOptionsWhere<T> });
+    return this.repository.remove(entity);
+  }
+
+  async removeWithId(id: string) {
+    const found = await this.findOne({ where: { id } as FindOptionsWhere<T> });
     return this.repository.remove(found);
   }
 }
