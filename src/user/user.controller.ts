@@ -29,7 +29,9 @@ export class UserController {
 
   @Get(':username')
   findOne(@Param() searchOptions: SearchUserDto) {
-    return this.userService.findOne(searchOptions);
+    return this.userService.findOne({
+      where: searchOptions,
+    });
   }
 
   @Patch(':id')
