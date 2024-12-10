@@ -6,4 +6,5 @@ export interface ISession {
   generate(): string;
   genereateAndSave(user: User): Promise<Session>;
   verify(session_token: string): Promise<boolean>;
+  invalidate(session_token: string): Promise<void>;
 }
