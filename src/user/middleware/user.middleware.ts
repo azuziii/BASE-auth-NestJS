@@ -18,7 +18,7 @@ export class UserMiddleware implements NestMiddleware {
 
     if (sessionToken) {
       user = await this.iUser.findOne({
-        sessions: { session_token: sessionToken },
+        where: { sessions: { session_token: sessionToken } },
       });
 
       this.cls.set(SESSION_TOKEN, sessionToken);
