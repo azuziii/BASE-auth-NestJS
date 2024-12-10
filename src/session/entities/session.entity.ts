@@ -26,4 +26,8 @@ export class Session extends Base {
     const now = new Date();
     return now <= this.expires_at;
   }
+
+  invalidate() {
+    this.expires_at = new Date();
+  }
 }
