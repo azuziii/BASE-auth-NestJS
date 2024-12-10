@@ -15,6 +15,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserMiddleware } from './user/middleware/user.middleware';
 import { ConfigModule } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { OtpModule } from './core/otp/otp.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
     UserModule,
     SessionModule,
     AuthModule,
+    OtpModule,
   ],
   controllers: [AppController],
   providers: [AppService],
