@@ -7,7 +7,11 @@ import { User } from 'src/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ClsService } from 'nestjs-cls';
-import { USER_AGENT_SYMBOL, USER_IP_SYMBOL } from 'src/user/constants';
+import {
+  USER_AGENT_SYMBOL,
+  USER_IP_SYMBOL,
+  USER_SYMBOL,
+} from 'src/user/constants';
 import { ISession } from './session.interface';
 
 @Injectable()
@@ -31,7 +35,7 @@ export class SessionService
     const token = this.generate();
 
     return this.save({
-      expires_at: new Date(Date.now() + 3600 * 24 * 30),
+      expires_at: new Date(Date.now() + 3600 * 24 * 30 * 1000),
       ip: this.cls.get(USER_IP_SYMBOL),
       user_agent: this.cls.get(USER_AGENT_SYMBOL),
       session_token: token,
@@ -40,18 +44,34 @@ export class SessionService
   }
 
   async isExpired(session_token: string): Promise<boolean> {
-    try {
-      const session = await this.findOne({ session_token });
-      return session.isActive();
-    } catch {
-      return true;
-    }
+    const user = this.cls.get<User>(USER_SYMBOL);
+    const session = await this.findOne({
+      where: { session_token, user: { id: user.id } },
+    });
+    if (!session) return false;
+    return session.isActive();
   }
   async verify(session_token: string): Promise<boolean> {
-    const isExpired = await this.isExpired(session_token);
-    console.log('isExpired');
-    console.log(isExpired);
+    const isActive = await this.isExpired(session_token);
+    console.log('isActive');
+    console.log(isActive);
+    return isActive;
+  }
 
-    return isExpired;
+  async invalidate(session_token: string): Promise<void> {
+    const user = this.cls.get<User>(USER_SYMBOL);
+
+    const session = await this.findOne({
+      where: {
+        session_token,
+        user: { id: user.id },
+      },
+    });
+
+    console.log(session);
+
+    session.invalidate();
+
+    await this.save(session);
   }
 }
