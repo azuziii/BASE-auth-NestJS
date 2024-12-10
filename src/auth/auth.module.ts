@@ -8,9 +8,10 @@ import { SessionStrategy } from './strategy/session.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { IAuth } from './auth.interface';
 import { RoleStrategy } from './strategy/role.strategy';
+import { OtpModule } from 'src/core/otp/otp.module';
 
 @Module({
-  imports: [UserModule, SessionModule, PassportModule],
+  imports: [UserModule, SessionModule, PassportModule, OtpModule],
   controllers: [AuthController],
   providers: [
     AuthService,
