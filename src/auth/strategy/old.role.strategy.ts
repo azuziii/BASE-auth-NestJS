@@ -1,3 +1,6 @@
+// Don't ask why I was using strategies instead of guards
+// Replaced with RoleGuard
+
 import { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Request } from 'express';
