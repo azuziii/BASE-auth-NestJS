@@ -4,7 +4,6 @@ import * as CookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 import { SessionInterceptor } from './session/interceptor/session.interceptor';
 import { SessionStrategy } from './auth/strategy/session.strategy';
-import { RoleStrategy } from './auth/strategy/old.role.strategy';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   //  add secrete  app.useGlobalPipes(
@@ -19,9 +18,6 @@ async function bootstrap() {
 
   const sessionGuard = app.get(SessionStrategy);
   app.useGlobalGuards(sessionGuard);
-
-  const roleGuard = app.get(RoleStrategy);
-  app.useGlobalGuards(roleGuard);
 
   app.enableCors({
     origin: '*',
