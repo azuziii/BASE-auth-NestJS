@@ -4,7 +4,7 @@ import * as CookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
 import { SessionInterceptor } from './session/interceptor/session.interceptor';
 import { SessionStrategy } from './auth/strategy/session.strategy';
-import { RoleStrategy } from './auth/strategy/role.strategy';
+import { RoleStrategy } from './auth/strategy/old.role.strategy';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   //  add secrete  app.useGlobalPipes(
