@@ -4,7 +4,6 @@ import {
   Inject,
   Injectable,
 } from '@nestjs/common';
-import { User } from 'src/user/entities/user.entity';
 import { Request } from 'express';
 import { PUBLIC } from 'src/shared/decorators/public.decorator';
 import { SESSION_TOKEN } from 'src/session/constants';
@@ -25,9 +24,6 @@ export class SessionGuard implements CanActivate {
     console.log(sessionToken);
 
     if (!sessionToken) return false;
-
-    const user = request.user as User;
-    console.log(user);
 
     return this.sessionService.verify(sessionToken);
   }

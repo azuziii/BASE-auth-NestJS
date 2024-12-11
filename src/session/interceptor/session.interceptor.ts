@@ -33,12 +33,12 @@ export class SessionInterceptor implements NestInterceptor {
               sessionToken,
               setSessionTokenData.options,
             );
-          } else if (clearSessionTokenData) {
-            response.clearCookie(
-              clearSessionTokenData.name,
-              clearSessionTokenData.options,
-            );
           }
+        } else if (clearSessionTokenData) {
+          response.clearCookie(
+            clearSessionTokenData.name,
+            clearSessionTokenData.options,
+          );
         }
       }),
     );

@@ -25,8 +25,6 @@ export class RoleGuard implements CanActivate {
 
     const user = request.user as User;
 
-    console.log(user);
-
     return isRoleRequired <= user.role;
   }
 }

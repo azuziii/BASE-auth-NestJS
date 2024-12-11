@@ -53,6 +53,8 @@ export class AuthService implements IAuth {
 
     this.cls.set(USER_SYMBOL, user);
 
+    console.log(999);
+
     const sessionToken = await this.login({ username, password });
 
     await this.otpService.saveAndSend(OtpType.ACTIVATE_ACCOUNT);

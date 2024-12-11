@@ -9,12 +9,14 @@ import { RegisterDto } from './dto/register.dto';
 import { VerifyRegister } from './dto/register-verify.dto';
 import { SetSessionToken } from 'src/session/decorators/set-session.decorator';
 import { VerifyGuard } from './guards/verify.guard';
+import { AlreadyLoggedInGuard } from './guards/alreadyLoggedIn.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Public()
+  @UseGuards(AlreadyLoggedInGuard)
   @UseGuards(AuthGuard('local'))
   @SetSessionToken(SESSION_TOKEN, {
     httpOnly: true,
@@ -28,6 +30,7 @@ export class AuthController {
   }
 
   @Public()
+  @UseGuards(AlreadyLoggedInGuard)
   @SetSessionToken(SESSION_TOKEN, {
     httpOnly: true,
     secure: false,
