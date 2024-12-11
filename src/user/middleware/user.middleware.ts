@@ -5,19 +5,23 @@ import { IUser } from '../user.interface';
 import { User } from '../entities/user.entity';
 import { ClsService } from 'nestjs-cls';
 import { USER_AGENT_SYMBOL, USER_IP_SYMBOL, USER_SYMBOL } from '../constants';
+import { ISession } from 'src/session/session.interface';
 
 @Injectable()
 export class UserMiddleware implements NestMiddleware {
   constructor(
-    @Inject(IUser) private readonly iUser: IUser,
+    @Inject(IUser) private readonly userService: IUser,
+    @Inject(ISession) private readonly sessionService: ISession,
     private readonly cls: ClsService,
   ) {}
   async use(req: Request, res: any, next: () => void) {
     const sessionToken = req.cookies[SESSION_TOKEN];
     let user: User | null = null;
 
-    if (sessionToken) {
-      user = await this.iUser.findOne({
+    const isSessionValid = await this.sessionService.verify(sessionToken);
+
+    if (isSessionValid) {
+      user = await this.userService.findOne({
         where: { sessions: { session_token: sessionToken } },
       });
 
@@ -29,6 +33,9 @@ export class UserMiddleware implements NestMiddleware {
     this.cls.set(USER_AGENT_SYMBOL, req.headers['user-agent']);
 
     req['user'] = user;
+
+    console.log('user');
+    console.log(user);
 
     next();
   }
