@@ -1,31 +1,30 @@
-// Don't ask why I was using strategies instead of guards
-// Replaced with RoleGuard
+// // Replaced with RoleGuard
 
-import { CanActivate, ExecutionContext } from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { Request } from 'express';
-import { User } from 'src/user/entities/user.entity';
-import { ROLE_SYMBOL } from '../decorators/role.decorator';
+// import { CanActivate, ExecutionContext } from '@nestjs/common';
+// import { Observable } from 'rxjs';
+// import { Request } from 'express';
+// import { User } from 'src/user/entities/user.entity';
+// import { ROLE_SYMBOL } from '../decorators/role.decorator';
 
-export class RoleStrategy implements CanActivate {
-  constructor() {}
+// export class RoleStrategy implements CanActivate {
+//   constructor() {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const isRoleRequired: number = Reflect.getMetadata(
-      ROLE_SYMBOL,
-      context.getHandler(),
-    );
+//   canActivate(
+//     context: ExecutionContext,
+//   ): boolean | Promise<boolean> | Observable<boolean> {
+//     const isRoleRequired: number = Reflect.getMetadata(
+//       ROLE_SYMBOL,
+//       context.getHandler(),
+//     );
 
-    if (!isRoleRequired) return true;
+//     if (!isRoleRequired) return true;
 
-    const request: Request = context.switchToHttp().getRequest();
+//     const request: Request = context.switchToHttp().getRequest();
 
-    const user = request.user as User;
+//     const user = request.user as User;
 
-    console.log(user);
+//     console.log(user);
 
-    return isRoleRequired <= user.role;
-  }
-}
+//     return isRoleRequired <= user.role;
+//   }
+// }
