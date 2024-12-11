@@ -7,8 +7,9 @@ import { SessionModule } from 'src/session/session.module';
 import { SessionStrategy } from './strategy/session.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { IAuth } from './auth.interface';
-import { RoleStrategy } from './strategy/role.strategy';
 import { OtpModule } from 'src/core/otp/otp.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RoleGuard } from './guards/role.guard';
 
 @Module({
   imports: [UserModule, SessionModule, PassportModule, OtpModule],
@@ -17,10 +18,13 @@ import { OtpModule } from 'src/core/otp/otp.module';
     AuthService,
     LocalStrategy,
     SessionStrategy,
-    RoleStrategy,
     {
       provide: IAuth,
       useExisting: AuthService,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
     },
   ],
   exports: [IAuth],
