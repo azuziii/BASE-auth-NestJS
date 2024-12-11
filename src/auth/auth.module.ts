@@ -4,7 +4,6 @@ import { AuthController } from './auth.controller';
 import { LocalStrategy } from './strategy/local.strategy';
 import { UserModule } from 'src/user/user.module';
 import { SessionModule } from 'src/session/session.module';
-import { SessionStrategy } from './strategy/session.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { IAuth } from './auth.interface';
 import { OtpModule } from 'src/core/otp/otp.module';
@@ -17,7 +16,6 @@ import { RoleGuard } from './guards/role.guard';
   providers: [
     AuthService,
     LocalStrategy,
-    SessionStrategy,
     {
       provide: IAuth,
       useExisting: AuthService,

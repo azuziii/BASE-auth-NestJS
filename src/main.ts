@@ -2,8 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as CookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
-import { SessionInterceptor } from './session/interceptor/session.interceptor';
-import { SessionStrategy } from './auth/strategy/session.strategy';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   //  add secrete  app.useGlobalPipes(
@@ -13,11 +11,8 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  app.use(CookieParser());
-  app.useGlobalInterceptors(new SessionInterceptor());
 
-  const sessionGuard = app.get(SessionStrategy);
-  app.useGlobalGuards(sessionGuard);
+  app.use(CookieParser());
 
   app.enableCors({
     origin: '*',
