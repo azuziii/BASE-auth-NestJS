@@ -12,7 +12,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('test')
+  @Get('admin')
   @Role(UserRole.ADMIN)
   testRole(): string {
     return 'Your are an admin';
